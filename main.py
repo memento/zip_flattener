@@ -32,8 +32,11 @@ def write_tree_and_contents(zip_contents, extract_to, output_file):
             path = os.path.join(extract_to, file)
             if os.path.isfile(path):
                 f.write(f"File: {path}\n")
-                with open(path, "r") as file_content:
-                    f.write(file_content.read())
+                try:
+                    with open(path, "r", encoding="utf-8") as file_content:
+                        f.write(file_content.read())
+                except UnicodeDecodeError:
+                    f.write("[Binary file data not shown]\n")
                 f.write("\n\n")
 
 
