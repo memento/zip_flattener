@@ -22,7 +22,7 @@ def generate_tree(directory, prefix=''):
 
 
 def write_tree_and_contents(zip_contents, extract_to, output_file):
-    with open(output_file, "w") as f:
+    with open(output_file, "w", encoding="utf-8") as f:
         # Write the tree structure
         f.write(generate_tree(extract_to))
         f.write("\n\n")
