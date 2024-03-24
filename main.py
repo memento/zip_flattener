@@ -1,5 +1,16 @@
 import zipfile
 import os
+import shutil
+
+
+def clear_directory(directory):
+    for item in os.listdir(directory):
+        path = os.path.join(directory, item)
+        if item != '.gitkeep':
+            if os.path.isdir(path):
+                shutil.rmtree(path)
+            else:
+                os.remove(path)
 
 
 def extract_zip(zip_path, extract_to="."):
@@ -45,5 +56,6 @@ zip_path = "my_test.zip"  # Change this to your zip file path
 extract_to = "extracted"  # Directory where the zip contents will be extracted
 output_file = "output.txt"  # The output file with tree and contents
 
+clear_directory(extract_to)
 zip_contents = extract_zip(zip_path, extract_to)
 write_tree_and_contents(zip_contents, extract_to, output_file)
