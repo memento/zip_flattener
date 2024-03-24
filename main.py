@@ -4,6 +4,11 @@ import shutil
 
 
 def clear_directory(directory):
+    """Clear the contents of a given directory except for a .gitkeep file.
+
+    Args:
+        directory (str): The directory to clear.
+    """
     for item in os.listdir(directory):
         path = os.path.join(directory, item)
         if item != '.gitkeep':
@@ -14,12 +19,30 @@ def clear_directory(directory):
 
 
 def extract_zip(zip_path, extract_to="."):
+    """Extract a ZIP file into a specified directory.
+
+    Args:
+        zip_path (str): Path to the ZIP file to be extracted.
+        extract_to (str): Directory where the ZIP file will be extracted.
+
+    Returns:
+        list: A list of filenames that were extracted.
+    """
     with zipfile.ZipFile(zip_path, 'r') as zip_ref:
         zip_ref.extractall(extract_to)
         return zip_ref.namelist()
 
 
 def generate_tree(directory, prefix=''):
+    """Generate a text representation of the directory tree.
+
+    Args:
+        directory (str): The directory to generate the tree for.
+        prefix (str): A prefix for each line of the tree (used for recursion).
+
+    Returns:
+        str: A string representation of the directory tree.
+    """
     tree_str = ""
     files = sorted(os.listdir(directory))
     for i, file in enumerate(files):
