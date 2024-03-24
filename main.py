@@ -32,8 +32,40 @@ def generate_tree(directory, prefix=''):
     return tree_str
 
 
-def write_tree_and_contents(zip_contents, extract_to, output_file):
+def read_prologue_file(prologue_file_path):
+    """Read the contents of the prologue file.
+
+    Args:
+        prologue_file_path (str): Path to the prologue file.
+
+    Returns:
+        str: The contents of the prologue file.
+    """
+    try:
+        with open(prologue_file_path, 'r', encoding='utf-8') as prologue_file:
+            return prologue_file.read() + "\n\n"
+    except FileNotFoundError:
+        return ""
+
+
+def write_tree_and_contents(
+        zip_contents,
+        extract_to,
+        output_file,
+        prologue_content
+):
+    """Write the directory tree and file contents to an output file.
+
+    Args:
+        zip_contents (list): List of file paths from the ZIP.
+        extract_to (str): Directory where the ZIP contents are extracted.
+        output_file (str): Path to the output file.
+        prologue_content (str): Content to be written as a prologue.
+    """
     with open(output_file, "w", encoding="utf-8") as f:
+        # Write the prologue content
+        f.write(prologue_content)
+
         # Write the tree structure
         f.write(generate_tree(extract_to))
         f.write("\n\n")
@@ -75,8 +107,10 @@ def convert_multiline_to_single_line_and_save(file_path, output_path):
 zip_path = "my_test.zip"  # Change this to your zip file path
 extract_to = "extracted"  # Directory where the zip contents will be extracted
 output_file = "output.txt"  # The output file with tree and contents
+prologue_file_path = "prologue.txt"  # Path to the prologue file
 
 clear_directory(extract_to)
 zip_contents = extract_zip(zip_path, extract_to)
-write_tree_and_contents(zip_contents, extract_to, output_file)
+prologue_content = read_prologue_file(prologue_file_path)
+write_tree_and_contents(zip_contents, extract_to, output_file, prologue_content)
 convert_multiline_to_single_line_and_save(output_file, "output_oneliner.txt")
